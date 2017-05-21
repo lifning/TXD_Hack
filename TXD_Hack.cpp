@@ -1,4 +1,5 @@
-#include "stdafx.h"
+#include "stdio.h"
+#include "string.h"
 #include "txdstruct.h"
 #include "ddsstruct.h"
 #include "txdunpack.h"

@@ -1,7 +1,7 @@
 int packTXD(char *files[], int number)
 {
 	int i, j; // Variables for loops
-	fpos_t size; // Where we'll store the size of stuff
+	int size; // Where we'll store the size of stuff
 	char *txdName; // Name of the TXD to output
 	char *ddsName; // Name of the DDS being read
 	FILE *inputDDS; // File we'll read .DDS data from
@@ -37,7 +37,7 @@ int packTXD(char *files[], int number)
 		return 2; // Return the error
 
 	fseek(inputDDS, 0, SEEK_END); // Go to the end of the file
-	fgetpos(inputDDS, &size); // Read the size of the file into our variable for it
+	size = ftell(inputDDS); // Read the size of the file into our variable for it
 	fseek(inputDDS, 0, SEEK_SET); // Go back to the beginning
 	fread(&ddsData, sizeof(ddsData), 1, inputDDS); // Read the header data
 
@@ -196,7 +196,7 @@ txdData.ddsType = 38144; // Force it to be right
 			return 2; // Return the error
 
 		fseek(inputDDS, 0, SEEK_END); // Go to the end of the file
-		fgetpos(inputDDS, &size); // Read the size of the file into our variable for it
+		size = ftell(inputDDS); // Read the size of the file into our variable for it
 		fseek(inputDDS, 0, SEEK_SET); // Go back to the beginning
 		fread(&ddsData, sizeof(ddsData), 1, inputDDS); // Read the header data
 
@@ -339,7 +339,7 @@ txdSubData.ddsType = 38144; // Force it to be right
 		printf("\n\tPacked: %s.dds", txdSubData.fileName); // Output the file we've packed
 	}
 
-	fgetpos(outputTXD, &size); // Get the size of the .TXD
+	size = ftell(outputTXD); // Get the size of the .TXD
 	size += 12; // Set the size to what we can use in the .TXD header
 	fseek(outputTXD, 4, SEEK_SET); // Rewind to where the size is
 	fwrite(&size, 4, 1, outputTXD); // Write the proper size
